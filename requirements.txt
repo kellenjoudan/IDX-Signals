@@ -1,0 +1,7 @@
+pandas
+pyarrow
+yfinance
+matplotlib
+ipykernel
+ruff
+pytest
