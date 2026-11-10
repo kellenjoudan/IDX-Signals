@@ -1,0 +1,1 @@
+* `raw_close`: Split-adjusted but **not** dividend-adjusted. Used for lot cost ($1 \text{ lot} = 100 \times \text{raw\_close}$) and tick-size execution logic in Week 4.

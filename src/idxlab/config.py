@@ -7,4 +7,5 @@ LQ45_TICKERS = [
 ]
 #list as of October 2026
 
-
+START_DATE = "2019-01-01"
+END_DATE = "2024-01-01"
