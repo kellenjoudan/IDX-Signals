@@ -1,0 +1,7 @@
+README.md
+pyproject.toml
+src/idxlab.egg-info/PKG-INFO
+src/idxlab.egg-info/SOURCES.txt
+src/idxlab.egg-info/dependency_links.txt
+src/idxlab.egg-info/top_level.txt
+tests/test_sample.py
