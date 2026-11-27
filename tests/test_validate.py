@@ -1,9 +1,10 @@
-import pytest
 import pandas as pd
+import pytest
+
 from idxlab.data.validate import (
-    check_zero_volume_days,
-    check_trading_gaps,
     check_price_jumps,
+    check_trading_gaps,
+    check_zero_volume_days,
 )
 
 
@@ -41,14 +42,14 @@ def synthetic_df():
 
 
 def test_zero_volume_days_detection(synthetic_df):
-    zero_rows, summary = check_zero_volume_days(synthetic_df)
+    zero_rows, _summary = check_zero_volume_days(synthetic_df)
     assert len(zero_rows) == 1
     assert zero_rows.iloc[0]["ticker"] == "TKRB"
     assert zero_rows.iloc[0]["date"] == pd.Timestamp("2024-01-09")
 
 
 def test_single_ticker_gap_separation(synthetic_df):
-    gap_df, active_dates = check_trading_gaps(synthetic_df)
+    gap_df, _active_dates = check_trading_gaps(synthetic_df)
     assert len(gap_df) == 1
     assert gap_df.iloc[0]["ticker"] == "TKRB"
     assert gap_df.iloc[0]["missing_date"] == "2024-01-11"

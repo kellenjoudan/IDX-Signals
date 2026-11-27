@@ -1,8 +1,10 @@
 import logging
 import os
+
 import pandas as pd
 import yfinance as yf
-from idxlab.config import LQ45_TICKERS, START_DATE, END_DATE
+
+from idxlab.config import END_DATE, LQ45_TICKERS, START_DATE
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
@@ -77,7 +79,7 @@ def download_and_clean_lq45(start_date: str = START_DATE, end_date: str = END_DA
 
     missing_tickers = set(LQ45_TICKERS) - downloaded_tickers
     if missing_tickers:
-        logging.warning(f"Missing tickers from universe: {sorted(list(missing_tickers))}")
+        logging.warning(f"Missing tickers from universe: {sorted(missing_tickers)}")
 
     if not processed_dfs:
         raise ValueError("No ticker data was successfully downloaded.")

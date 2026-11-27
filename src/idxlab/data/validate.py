@@ -4,10 +4,10 @@ Merges previous check.py and check2.py checks into a unified validator script.
 Run via: python -m idxlab.data.validate
 """
 
-import sys
 from pathlib import Path
+
 import pandas as pd
-import numpy as np
+
 from idxlab.config import LQ45_TICKERS
 
 DATA_PATH = Path("data/processed/prices.parquet")
@@ -28,7 +28,7 @@ def check_missing_universe(df: pd.DataFrame, expected_tickers: list) -> list:
     if not expected_tickers:
         return []
     present_tickers = set(df["ticker"].unique())
-    return sorted(list(set(expected_tickers) - present_tickers))
+    return sorted(set(expected_tickers) - present_tickers)
 
 
 def check_short_histories(df: pd.DataFrame, threshold_ratio: float = 0.8) -> pd.DataFrame:
@@ -115,8 +115,7 @@ def generate_markdown_report(
         f.write("## 1. Missing Universe Tickers\n")
         if missing_universe:
             f.write(f"The following {len(missing_universe)} ticker(s) were missing entirely from download:\n")
-            for t in missing_universe:
-                f.write(f"- `{t}` (Listed after download `END_DATE`, e.g., AADI)\n")
+            f.writelines(f"- `{t}` (Listed after download `END_DATE`, e.g., AADI)\n" for t in missing_universe)
         else:
             f.write("All target universe tickers are present.\n")
         f.write("\n")

@@ -7,7 +7,7 @@ Built by two undergraduate students for learning and portfolio purposes.
 > Nothing here is financial advice.
 
 ## Status
-🚧 Week 1 of 16 — setup in progress. See [docs/journal.md](docs/journal.md) for
+🚧 Week 3 of 16 — data pipeline and first backtest. See [docs/journal.md](docs/journal.md) for
 weekly progress and [docs/PROJECT_SPEC.md](docs/PROJECT_SPEC.md) for scope decisions.
 
 ## Table of Contents
@@ -34,7 +34,15 @@ XGBoost · SHAP · matplotlib · Streamlit · pytest · ruff · GitHub Actions
 _Setup instructions will be filled in as each piece becomes runnable._
 
 ## Results
-_To be filled in starting Week 5 — see docs/results/._
+All numbers so far are verification runs, not benchmarks. Real benchmarks with costs come in Week 4.
+
+| Run | Period | Total return | CAGR | Max drawdown | Notes |
+|---|---|---|---|---|---|
+| Equal-weight buy-and-hold, 5 tickers (BBCA, BBRI, BMRI, ASII, UNTR) | 2022-01-03 to 2023-12-29 | 45.8% | 20.9% | -15.5% (2022-07-07) | No costs, dividend-adjusted prices, checked against a hand calculation for BBCA |
 
 ## Known limitations
-_To be documented as they're discovered._
+- **Hindsight bias in the universe:** the ticker list is the current LQ45 (October 2026),
+  applied to 2019-2023 data. Some stocks joined the index partly because of recent performance.
+- **Adjusted prices:** returns include dividends. IHSG is a price index, so comparisons
+  with it favor the stocks.
+- **Short sample so far:** the verification run covers 5 large stocks over 2 years.

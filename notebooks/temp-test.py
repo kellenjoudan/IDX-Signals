@@ -1,6 +1,6 @@
-import yfinance as yf
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
+import yfinance as yf
 
 # 1. Define tickers with IDX suffix
 tickers = ["BBCA.JK", "BBRI.JK", "BMRI.JK", "ASII.JK", "UNTR.JK"]

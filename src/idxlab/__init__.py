@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def load_prices(filepath="data/processed/prices.parquet"):
     """
     Loads the cleaned LQ45 price data.
