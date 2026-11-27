@@ -4,4 +4,14 @@ src/idxlab.egg-info/PKG-INFO
 src/idxlab.egg-info/SOURCES.txt
 src/idxlab.egg-info/dependency_links.txt
 src/idxlab.egg-info/top_level.txt
+src/idxlab/backtest/buy_and_hold.py
+src/idxlab/backtest/costs.py
+src/idxlab/backtest/engine.py
+src/idxlab/backtest/metrics.py
+src/idxlab/backtest/portfolio.py
+tests/test_backtest.py
+tests/test_costs.py
+tests/test_engine.py
+tests/test_metrics_week4.py
+tests/test_portfolio.py
 tests/test_sample.py
