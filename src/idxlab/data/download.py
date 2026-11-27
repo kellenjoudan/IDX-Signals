@@ -6,13 +6,13 @@ import yfinance as yf
 
 from idxlab.config import END_DATE, LQ45_TICKERS, START_DATE
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logger = logging.getLogger(__name__)
 
 
 def download_and_clean_lq45(start_date: str = START_DATE, end_date: str = END_DATE):
     yf_tickers = [f"{t}.JK" for t in LQ45_TICKERS]
-    
-    logging.info(f"Downloading historical data from {start_date} to {end_date}...")
+
+    logger.info(f"Downloading historical data from {start_date} to {end_date}...")
     raw_data = yf.download(
         tickers=yf_tickers,
         start=start_date,
@@ -32,7 +32,7 @@ def download_and_clean_lq45(start_date: str = START_DATE, end_date: str = END_DA
         # Check if ticker exists in downloaded columns
         if isinstance(raw_data.columns, pd.MultiIndex):
             if yf_ticker not in raw_data.columns.levels[0]:
-                logging.warning(
+                logger.warning(
                     f"[SKIP WARNING] Ticker '{ticker}' was not returned by yfinance. "
                     f"Confirm if IPO/listing occurred after {end_date} (e.g., AADI listed in late 2024)."
                 )
@@ -42,8 +42,9 @@ def download_and_clean_lq45(start_date: str = START_DATE, end_date: str = END_DA
             df = raw_data.copy().dropna(how="all")
 
         if df.empty or "Close" not in df.columns or df["Close"].isna().all():
-            logging.warning(
-                f"[SKIP WARNING] Ticker '{ticker}' returned zero valid price rows between {start_date} and {end_date}. Skipping."
+            logger.warning(
+                f"[SKIP WARNING] Ticker '{ticker}' returned zero valid price rows "
+                f"between {start_date} and {end_date}. Skipping."
             )
             continue
 
@@ -63,7 +64,7 @@ def download_and_clean_lq45(start_date: str = START_DATE, end_date: str = END_DA
         # 3. Format to match DATA_CONTRACT.md
         df["volume"] = df["Volume"]
         df["ticker"] = ticker
-        
+
         # Rule: Flag zero-volume rows as suspended
         df["is_suspended"] = df["volume"] == 0
 
@@ -73,13 +74,13 @@ def download_and_clean_lq45(start_date: str = START_DATE, end_date: str = END_DA
 
         contract_cols = [
             "date", "ticker", "open", "high", "low", "close",
-            "volume", "raw_close", "value_traded", "is_suspended"
+            "volume", "raw_close", "value_traded", "is_suspended",
         ]
         processed_dfs.append(df[contract_cols])
 
     missing_tickers = set(LQ45_TICKERS) - downloaded_tickers
     if missing_tickers:
-        logging.warning(f"Missing tickers from universe: {sorted(missing_tickers)}")
+        logger.warning(f"Missing tickers from universe: {sorted(missing_tickers)}")
 
     if not processed_dfs:
         raise ValueError("No ticker data was successfully downloaded.")
@@ -92,8 +93,9 @@ def download_and_clean_lq45(start_date: str = START_DATE, end_date: str = END_DA
     os.makedirs(output_dir, exist_ok=True)
     file_path = os.path.join(output_dir, "prices.parquet")
     final_df.to_parquet(file_path, index=False)
-    logging.info(f"Saved {len(final_df)} rows for {len(downloaded_tickers)} tickers to {file_path}")
+    logger.info(f"Saved {len(final_df)} rows for {len(downloaded_tickers)} tickers to {file_path}")
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
     download_and_clean_lq45()
